@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI vs AGI Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+            height: 100vh;
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+        
+        .ai-section {
+            border-left: 4px solid #00dbde;
+        }
+        
+        .agi-section {
+            border-left: 4px solid #fc00ff;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .ai-section .section-title {
+            color: #00dbde;
+        }
+        
+        .agi-section .section-title {
+            color: #fc00ff;
+        }
+        
+        .icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+        }
+        
+        .comparison-grid {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stat-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .ai-stat { color: #00dbde; }
+        .agi-stat { color: #fc00ff; }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .ai-progress { background: #00dbde; }
+        .agi-progress { background: #fc00ff; }
+        
+        .timeline {
+            grid-column: 1 / -1;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background: linear-gradient(90deg, #00dbde 0%, #fc00ff 100%);
+            transform: translateY(-50%);
+        }
+        
+        .timeline-items {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .timeline-year {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00dbde;
+        }
+        
+        .timeline-event {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .comparison-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>AI vs AGI</h1>
+            <p>Understanding the Journey from Narrow to General Intelligence</p>
+        </div>
+        
+        <div class="card ai-section">
+            <div class="section-title">
+                <div class="icon">🤖</div>
+                <h2>Artificial Intelligence (AI)</h2>
+            </div>
+            <p style="margin-bottom: 20px;">Specialized systems designed for specific tasks</p>
+            <ul class="feature-list">
+                <li>Task-specific optimization</li>
+                <li>Pattern recognition & data analysis</li>
+                <li>Limited to trained domains</li>
+                <li>Requires human supervision</li>
+                <li>Currently deployed worldwide</li>
+            </ul>
+            <div class="progress-bar">
+                <div class="progress-fill ai-progress" style="width: 85%"></div>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">Development Progress: 85%</p>
+        </div>
+        
+        <div class="card agi-section">
+            <div class="section-title">
+                <div class="icon">🧠</div>
+                <h2>Artificial General Intelligence (AGI)</h2>
+            </div>
+            <p style="margin-bottom: 20px;">Human-level cognitive abilities across all domains</p>
+            <ul class="feature-list">
+                <li>Universal problem solving</li>
+                <li>Self-learning & adaptation</li>
+                <li>Cross-domain knowledge transfer</li>
+                <li>Autonomous decision making</li>
+                <li>Theoretical concept (not yet achieved)</li>
+            </ul>
+            <div class="progress-bar">
+                <div class="progress-fill agi-progress" style="width: 15%"></div>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">Development Progress: 15%</p>
+        </div>
+        
+        <div class="card comparison-grid">
+            <div class="stat-card">
+                <h3>Intelligence Type</h3>
+                <div class="stat-value ai-stat">Narrow</div>
+                <div class="stat-value agi-stat">General</div>
+            </div>
+            <div class="stat-card">
+                <h3>Learning Capability</h3>
+                <div class="stat-value ai-stat">Limited</div>
+                <div class="stat-value agi-stat">Unlimited</div>
+            </div>
+            <div class="stat-card">
+                <h3>Consciousness</h3>
+                <div class="stat-value ai-stat">None</div>
+                <div class="stat-value agi-stat">Potential</div>
+            </div>
+            <div class="stat-card">
+                <h3>Timeline</h3>
+                <div class="stat-value ai-stat">Now</div>
+                <div class="stat-value agi-stat">2030+?</div>
+            </div>
+        </div>
+        
+        <div class="card timeline">
+            <div class="timeline-line"></div>
+            <div class="timeline-items">
+                <div class="timeline-item">
+                    <div class="timeline-year">1956</div>
+                    <div class="timeline-event">AI Term Coined</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">1997</div>
+                    <div class="timeline-event">Deep Blue beats Kasparov</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2012</div>
+                    <div class="timeline-event">Deep Learning Revolution</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-event">ChatGPT & LLMs</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year" style="color: #fc00ff;">2030+</div>
+                    <div class="timeline-event">AGI Breakthrough?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
